@@ -18,20 +18,25 @@ namespace QuickBuy.Dominio.Entidades
         public int NumeroEndereco { get; set; }
         public int FormaPagamentoId { get; set; }
         public FormaPagamento FormaPagamento { get; set; }
+        public virtual Usuario Usuario { get; set; }
 
         /// <summary>
         /// Pedido deve ter pelo menos um item de pedido ou muitos itens de pedidos
         /// </summary>
-        public ICollection<ItemPedido> ItensPedido { get; set; }
+        public virtual ICollection<ItemPedido> ItensPedido { get; set; }
 
         public override void Validate()
         {
             LimparMensagensvalidacao();
+
             if (!ItensPedido.Any())
                 AdicionarCritica("Pedido não pode ficar sem intem");
 
             if (string.IsNullOrEmpty(Cep))
                 AdicionarCritica("Cep deve estar preenchido");
+
+            if (FormaPagamentoId == 0)
+                AdicionarCritica("Não foi informado a forma de pagamento");
 
         }
     }
